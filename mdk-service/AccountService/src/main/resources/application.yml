@@ -1,17 +1,32 @@
+spring:
+  application:
+    name: account-service
+  datasource:
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/userdb
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+    show-sql: true
+
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
 server:
   port: 8085
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://localhost:8762/eureka}
+  instance:
+    preferIpAddress: true
 
-spring:
-  datasource:
-    url: jdbc:h2:mem:accountdb
-    driverClassName: org.h2.Driver
-    username: sa
-    password: sa
-  h2:
-    console:
-      enabled: true
-  jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
-    hibernate:
-      ddl-auto: update
-    show-sql: true
+
+
+
+

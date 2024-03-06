@@ -1,0 +1,190 @@
+$docker exec -it kafka bash
+
+Stop Kafka
+$docker-compose down -v
+
+Show the version of kafka inside docker container
+$KAFKA_HOME/bin/kafka-broker-api-versions.sh --bootstrap-server localhost:9092 --version
+
+Show clusterId
+$KAFKA_HOME/bin/zookeeper-shell $ZK_HOSTS:2181 get /cluster/id
+
+
+_____________ ZOOKEEPER COMMANDS ______________
+To be able to see metadata of the Kafka cluster from Zookeeper first connect to Zookeeper using the zookeeper-shell command that ships with the Kafka distribution.
+
+$KAFKA_HOME/bin/zookeeper-shell.sh $ZK_HOSTS:2181
+
+$./usr/bin/zookeeper-shell zookeeper:2181 get /cluster/id
+
+List all brokers
+
+$ls /brokers/ids
+
+Show the details of the broker
+
+$get /brokers/ids/1
+
+Show details of a specific topic
+
+$get /brokers/topics/my-first-topic
+
+Exit Zookeeper
+
+$exit
+
+Create a Kafka topic
+$KAFKA_HOME/bin/kafka-topics.sh --zookeeper $ZK_HOSTS --create --topic $TOPIC_NAME --partitions 3 --replication-factor 1
+$bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic myTopic
+
+Crete a topic that doesn't exist
+$KAFKA_HOME/bin/kafka-topics.sh --zookeeper $ZK_HOSTS --create --topic $TOPIC_NAME --partitions 3 --replication-factor 1 --if-not-exists
+$./usr/bin/kafka-topics --zookeeper zookeeper:2181 --create --topic my-first-topic --partitions 3 --replication-factor 1 --if-not-exists
+
+
+Create a Kafka topic with a short retention
+By default, a Kafka topic has a retention period of 7 days.
+This example shows the command to create a topic with a retention period of 10 seconds.
+
+$./usr/bin/kafka-topics --bootstrap-server localhost:9092 --create --topic my-topic-with-short-retention-period --partitions 3 --replication-factor 1 --config retention.ms=10000 --config segment.ms=10000
+
+$KAFKA_HOME/bin/kafka-topics.sh --zookeeper $ZK_HOSTS --list
+
+$kafka-topics.sh --zookeeper zookeeper:2181 --list
+
+
+List Kafka topics and exclude internal topics
+
+$KAFKA_HOME/bin/kafka-topics.sh --zookeeper $ZK_HOSTS --list --exclude-internal
+
+
+Example to execute in Docker:
+./usr/bin/kafka-topics --zookeeper zookeeper:2181 --list --exclude-internal
+
+
+
+Show the Kafka topic details
+
+$KAFKA_HOME/bin/kafka-topics.sh --zookeeper $ZK_HOSTS
+--topic $TOPIC_NAME --describe
+
+Increase the number of partitions of a Kafka topic
+$KAFKA_HOME/bin/kafka-topics.sh --zookeeper $ZK_HOSTS
+--alter --topic my-first-topic --partitions 5
+
+./usr/bin/kafka-topics --zookeeper zookeeper:2181 --alter --topic my-first-topic --partitions 5
+
+Change the retention time of a Kafka topic : 259200000 ms = 3 days
+
+$KAFKA_HOME/bin/kafka-configs.sh --zookeeper $ZK_HOSTS --alter --entity-type topics --entity-name my-first-topic --add-config retention.ms=259200000
+
+$./usr/bin/kafka-configs --zookeeper zookeeper:2181 --alter --entity-type topics --entity-name my-first-topic --add-config retention.ms=259200000
+
+Purge a Kafka topic
+// We can purge the topic but we can change the retention time of the topic to one minute
+$KAFKA_HOME/bin/kafka-configs.sh --zookeeper $ZK_HOSTS --alter --entity-type topics --entity-name my-first-topic --add-config retention.ms=1000
+
+
+
+List Kafka topics (with configuration values) that have specific configuration overrides
+
+$KAFKA_HOME/bin/kafka-topics.sh --zookeeper $ZK_HOSTS --describe --topics-with-overrides
+./usr/bin/kafka-topics --zookeeper zookeeper:2181 --describe --topics-with-overrides
+
+
+Show specific Kafka topic configuration overrides
+
+$KAFKA_HOME/bin/kafka-topics.sh --zookeeper $ZK_HOSTS --describe --entity-type topics --entity-name my-first-topic
+
+
+Show partition offsets of a Kafka topic   ##Format is: topicname:partition-id:offset
+
+$KAFKA_HOME/bin/kafka-run-class.sh kafka.tools.GetOffsetShell --broker-list localhost:9092 --topic $TOPIC_NAME
+$./usr/bin/kafka-run-class kafka.tools.GetOffsetShell --broker-list localhost:9092 --topic my-first-topic
+
+
+Show offset for specific partition(s) of a Kafka topic
+
+$KAFKA_HOME/bin/kafka-run-class.sh kafka.tools.GetOffsetShell --broker-list localhost:9092 --topic $TOPIC_NAME --partitions partition-id, another-partition-id
+
+$./usr/bin/kafka-run-class kafka.tools.GetOffsetShell --broker-list localhost:9092 --topic my-first-topic --partitions 0,2
+
+Delete a Kafka topic # Purge will delete all the contents in topic, Delete will delete the topic
+
+$KAFKA_HOME/bin/kafka-topics.sh — zookeeper $ZK_HOSTS --delete
+--topic $TOPIC_NAME
+
+./usr/bin/kafka-topics --zookeeper zookeeper:2181 --delete --topic my-first-topic
+
+
+###### Producing the message in a topic
+
+$KAFKA_HOME/usr/bin/kafka-console-producer.sh --broker-list localhost:9092 --topic $TOPIC_NAME
+
+
+Note:
+
+Repeat the same step to publish more messages
+The message published to Kafka has a null key
+Press Ctrl+C to exit
+
+Produce messages to a Kafka topic from a file
+Example file topic-input.txt (make sure each message is on a new line):
+
+Hello World
+Kafka Rocks!
+Happy Streaming
+Produce messages to the topic from the file:
+
+$KAFKA_HOME/bin/kafka-console-producer.sh --broker-list localhost:9092 --topic my-first-topic < topic-input.txt
+
+
+
+Produce messages to Kafka with both key and value
+By default messages sent to a Kafka topic will result in messages with null keys. In this example, the separator between the key and the value is: :
+
+$KAFKA_HOME/usr/bin/kafka-console-producer.sh --broker-list localhost:9092 --topic $TOPIC_NAME --property parse.key=true
+--property key.separator=:
+
+>key:value
+>foo:bar
+>anotherKey:another value
+
+
+
+###### Consuming the message in a topic
+
+$KAFKA_HOME/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic $TOPIC_NAME
+$./usr/bin/kafka-console-consumer --bootstrap-server localhost:9092 --topic my-first-topic
+
+
+Consume a Kafka topic and show both key, value and timestamp
+By default, the console consumer will only the value of the Kafka record.
+Using this command you can show both the key and value
+
+$KAFKA_HOME/bin/kafka-console-consumer --bootstrap-server localhost:9092 --topic some-topic --formatter kafka.tools.DefaultMessageFormatter --property print.timestamp=true --property print.key=true --property print.value=true
+
+
+./usr/bin/kafka-console-consumer --bootstrap-server localhost:9092 \    --topic some-topic \
+--formatter kafka.tools.DefaultMessageFormatter \
+--property print.timestamp=true \
+--property print.key=true \
+--property print.value=true
+
+
+Consume the topics from the beginning
+
+$KAFKA_HOME/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic my-first-topic --from-beginning
+
+
+
+
+How to read from a specific offset and partition with the Kafka
+'kafka-console-consumer \
+    --topic example-topic \
+    --bootstrap-server `grep "^\s*bootstrap.server" /tmp/ccloud.properties | tail -1` \
+    --consumer.config /tmp/ccloud.properties \
+    --property print.key=true \
+    --property key.separator="-" \
+    --partition 1 \
+    --offset 3'

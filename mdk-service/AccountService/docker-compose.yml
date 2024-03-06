@@ -1,0 +1,37 @@
+services:
+  account:
+    image: "arvind65/account:s1"
+    container_name: account-ms
+    ports:
+      - "8085:8085"
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      -banknetwork
+  loan:
+    image: "arvind65/loan:s1"
+    container_name: loan-ms
+    ports:
+      - "8087:8087"
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      -banknetwork
+  card:
+    image: "arvind65/card:s1"
+    container_name: card-ms
+    ports:
+      - "8089:8089"
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      -banknetwork
+networks:
+  banknetwork:
+    driver: bridge

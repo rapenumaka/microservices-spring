@@ -28,7 +28,7 @@ import java.util.Optional;
         description = "CRUD REST APIs in Bank to CREATE, UPDATE, FETCH AND DELETE account details"
 )
 @RestController
-@RequestMapping(path="/api/v1/", produces = {MediaType.APPLICATION_JSON_VALUE})
+@RequestMapping(path="/api/v1/account", produces = {MediaType.APPLICATION_JSON_VALUE})
 @AllArgsConstructor
 // This class should not contain NoArgsConstructor
 @Validated
@@ -56,7 +56,7 @@ public class AccountController {
     )
 
     @PostMapping("/create")
-    public ResponseEntity<ResponseDto> createCustomerAccount( @Valid  @RequestBody CustomerDto customerDto){
+    public ResponseEntity<ResponseDto> createCustomerAccount( @Valid @RequestBody CustomerDto customerDto){
         this.customerService.createCustomerAccount(customerDto);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
