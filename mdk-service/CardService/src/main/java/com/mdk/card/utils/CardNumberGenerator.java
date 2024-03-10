@@ -13,7 +13,7 @@ public class CardNumberGenerator {
 
        String value = String.valueOf(number);
 
-       value = String.format("%s-%s-%s-%s", value.substring(0,3),value.substring(4,7),value.substring(8,11),value.substring(12,15));
+       value = String.format("%s-%s-%s-%s", value.substring(0,4),value.substring(4,8),value.substring(8,12),value.substring(12,16));
 
        return value;
    }

@@ -22,7 +22,7 @@ public class Card extends BaseEntity{
     private String phoneNumber;
 
     @Column(name = "card-number")
-    private String cardNo;
+    private String cardNumber;
 
     @Column(name = "card-limit")
     private BigDecimal limit;

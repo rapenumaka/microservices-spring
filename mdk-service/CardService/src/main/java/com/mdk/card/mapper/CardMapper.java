@@ -11,7 +11,7 @@ public class CardMapper {
         card.setCardBalance(cardDto.getCardBalance());
         card.setLimit(cardDto.getCardLimit());
         card.setPhoneNumber(cardDto.getPhoneNumber());
-        card.setCardNo(cardDto.getCardNo());
+        card.setCardNumber(cardDto.getCardNo());
         return card;
     }
 
@@ -19,7 +19,7 @@ public class CardMapper {
         CardDto cardDto = new CardDto();
         cardDto.setCardBalance(card.getCardBalance());
         cardDto.setCardLimit(card.getLimit());
-        cardDto.setCardNo(card.getCardNo());
+        cardDto.setCardNo(card.getCardNumber());
         cardDto.setPhoneNumber(card.getPhoneNumber());
         return cardDto;
     }

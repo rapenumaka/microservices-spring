@@ -8,6 +8,8 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="EurekaServer" />
+        <module name="KafkaProducer" />
+        <module name="KafkaConsumer" />
         <module name="CardService" />
         <module name="LoanService" />
         <module name="AccountService" />
@@ -17,6 +19,8 @@
       <module name="AccountService" target="17" />
       <module name="CardService" target="17" />
       <module name="EurekaServer" target="17" />
+      <module name="KafkaConsumer" target="17" />
+      <module name="KafkaProducer" target="17" />
       <module name="LoanService" target="17" />
     </bytecodeTargetLevel>
   </component>
@@ -25,6 +29,8 @@
       <module name="AccountService" options="-parameters" />
       <module name="CardService" options="-parameters" />
       <module name="EurekaServer" options="-parameters" />
+      <module name="KafkaConsumer" options="-parameters" />
+      <module name="KafkaProducer" options="-parameters" />
       <module name="LoanService" options="-parameters" />
     </option>
   </component>

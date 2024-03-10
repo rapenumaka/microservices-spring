@@ -89,7 +89,7 @@ $KAFKA_HOME/bin/kafka-configs.sh --zookeeper $ZK_HOSTS --alter --entity-type top
 List Kafka topics (with configuration values) that have specific configuration overrides
 
 $KAFKA_HOME/bin/kafka-topics.sh --zookeeper $ZK_HOSTS --describe --topics-with-overrides
-./usr/bin/kafka-topics --zookeeper zookeeper:2181 --describe --topics-with-overrides
+./usr/bin/kafka-topics.sh --zookeeper zookeeper:2181 --describe --topics-with-overrides
 
 
 Show specific Kafka topic configuration overrides
@@ -156,7 +156,7 @@ $KAFKA_HOME/usr/bin/kafka-console-producer.sh --broker-list localhost:9092 --top
 
 $KAFKA_HOME/bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic $TOPIC_NAME
 $./usr/bin/kafka-console-consumer --bootstrap-server localhost:9092 --topic my-first-topic
-
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic arvind65
 
 Consume a Kafka topic and show both key, value and timestamp
 By default, the console consumer will only the value of the Kafka record.
